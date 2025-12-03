@@ -1,15 +1,493 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><title>Confirmar Eliminación</title></head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Eliminación - Escuela Chucky TI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a3a52;
+            --secondary: #2c5aa0;
+            --accent: #e8f0f8;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --gray: #34495e;
+            --light: #ecf0f1;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-dark);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        /* Animated background elements */
+        body::before {
+            content: '';
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(231, 76, 60, 0.08) 0%, transparent 70%);
+            top: -250px;
+            right: -250px;
+            border-radius: 50%;
+            animation: float 20s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(231, 76, 60, 0.06) 0%, transparent 70%);
+            bottom: -200px;
+            left: -200px;
+            border-radius: 50%;
+            animation: float 15s ease-in-out infinite reverse;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        .delete-container {
+            background: white;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(231, 76, 60, 0.2);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Warning stripe */
+        .delete-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: repeating-linear-gradient(
+                45deg,
+                var(--danger),
+                var(--danger) 20px,
+                #c0392b 20px,
+                #c0392b 40px
+            );
+            animation: slideStripe 1s linear infinite;
+        }
+
+        @keyframes slideStripe {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 0; }
+        }
+
+        .delete-header {
+            background: linear-gradient(135deg, #fadbd8 0%, #f5c6cb 100%);
+            padding: 40px 40px 35px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .delete-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--danger) 0%, #c0392b 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+            position: relative;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
+            }
+            50% { 
+                transform: scale(1.05);
+                box-shadow: 0 15px 40px rgba(231, 76, 60, 0.4);
+            }
+        }
+
+        .delete-icon::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid var(--danger);
+            animation: ripple 2s ease-out infinite;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        .delete-icon i {
+            font-size: 3rem;
+            color: white;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .delete-header h1 {
+            color: var(--danger);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            animation: fadeIn 0.6s ease-out 0.2s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .delete-header .subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+            animation: fadeIn 0.6s ease-out 0.3s both;
+        }
+
+        .delete-body {
+            padding: 40px;
+        }
+
+        .warning-message {
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+            border-left: 5px solid var(--danger);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            animation: fadeIn 0.6s ease-out 0.4s both;
+        }
+
+        .warning-message p {
+            color: var(--text-dark);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .alumno-info {
+            background: linear-gradient(135deg, var(--accent) 0%, #d5e8f7 100%);
+            border-left: 4px solid var(--secondary);
+            border-radius: 10px;
+            padding: 20px 25px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: fadeIn 0.6s ease-out 0.5s both;
+        }
+
+        .alumno-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--secondary) 0%, #1e5a96 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(44, 90, 160, 0.2);
+        }
+
+        .alumno-details {
+            flex: 1;
+        }
+
+        .alumno-details strong {
+            display: block;
+            color: var(--primary);
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .alumno-details span {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            animation: fadeIn 0.6s ease-out 0.6s both;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-action::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-action:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-confirm {
+            background: linear-gradient(135deg, var(--danger) 0%, #c0392b 100%);
+            color: white;
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn-confirm::before {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-confirm:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-confirm:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-cancel {
+            background: white;
+            color: var(--text-dark);
+            border: 2px solid #bdc3c7;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-cancel::before {
+            background: rgba(44, 90, 160, 0.1);
+        }
+
+        .btn-cancel:hover {
+            background: var(--light);
+            transform: translateY(-2px);
+            border-color: var(--secondary);
+        }
+
+        .warning-footer {
+            background: #fff9e6;
+            border-top: 2px solid #ffeaa7;
+            padding: 20px 40px;
+            text-align: center;
+            animation: fadeIn 0.6s ease-out 0.7s both;
+        }
+
+        .warning-footer p {
+            color: #d68910;
+            font-size: 0.9rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .warning-footer i {
+            font-size: 1.1rem;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 576px) {
+            .delete-container {
+                border-radius: 12px;
+            }
+
+            .delete-header {
+                padding: 30px 25px 25px 25px;
+            }
+
+            .delete-icon {
+                width: 80px;
+                height: 80px;
+            }
+
+            .delete-icon i {
+                font-size: 2.5rem;
+            }
+
+            .delete-header h1 {
+                font-size: 1.6rem;
+            }
+
+            .delete-body {
+                padding: 30px 25px;
+            }
+
+            .warning-message {
+                padding: 20px;
+            }
+
+            .warning-message p {
+                font-size: 1rem;
+            }
+
+            .alumno-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .action-buttons {
+                flex-direction: column-reverse;
+            }
+
+            .btn-action {
+                width: 100%;
+            }
+
+            .warning-footer {
+                padding: 15px 25px;
+            }
+        }
+
+        /* SMOOTH SCROLLING */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* SELECTION */
+        ::selection {
+            background: var(--danger);
+            color: white;
+        }
+    </style>
+</head>
+
 <body>
-    <h1>Confirmar Eliminación</h1>
-    
-    <p>¿Estás seguro de que deseas eliminar al alumno: <strong>{{ alumno.nombre }} {{ alumno.apellidos }}</strong>?</p>
-    
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Sí, Eliminar</button>
-        <a href="{% url 'alumno_list' %}">Cancelar</a>
-    </form>
+
+<div class="delete-container">
+    <!-- HEADER -->
+    <div class="delete-header">
+        <div class="delete-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h1>Confirmar Eliminación</h1>
+        <p class="subtitle">Esta acción no se puede deshacer</p>
+    </div>
+
+    <!-- BODY -->
+    <div class="delete-body">
+        <div class="warning-message">
+            <p>¿Estás seguro de que deseas eliminar permanentemente este alumno del sistema?</p>
+        </div>
+
+        <div class="alumno-info">
+            <div class="alumno-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="alumno-details">
+                <strong>{{ alumno.nombre }} {{ alumno.apellidos }}</strong>
+                <span>Se eliminarán todos los datos relacionados con este alumno</span>
+            </div>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="action-buttons">
+                <a href="{% url 'alumno_list' %}" class="btn-action btn-cancel">
+                    <i class="fas fa-times"></i>
+                    <span>Cancelar</span>
+                </a>
+                <button type="submit" class="btn-action btn-confirm">
+                    <i class="fas fa-trash-alt"></i>
+                    <span>Sí, Eliminar</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- FOOTER WARNING -->
+    <div class="warning-footer">
+        <p>
+            <i class="fas fa-info-circle"></i>
+            <strong>Advertencia:</strong> Esta acción es irreversible
+        </p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
