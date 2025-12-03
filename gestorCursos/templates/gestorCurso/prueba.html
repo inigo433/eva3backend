@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido a Chucky TI</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .box { padding: 30px; border: 1px solid #ddd; border-radius: 8px; max-width: 600px; margin: 20px auto; }
+        .success { background-color: #e6ffe6; border-color: #4CAF50; color: #006400; }
+        .info { background-color: #f0f8ff; border-color: #add8e6; color: #00008b; }
+    </style>
+</head>
+<body>
+
+    <div class="box info">
+        <h1>Escuela Chucky TI</h1>
+        <p>¡Bienvenido a la Escuela Chucky TI! Este es nuestro portal principal.</p>
+        <p>Nuetros servicios incluyen: Desarrollo Backend, Gestión de Proyectos y Comunicación Técnica.</p>
+    </div>
+
+    {% if user.is_authenticated %}
+        <div class="box success">
+            <h2>¡Sesión Iniciada! ✅</h2>
+            <p>Bienvenido, **{{ user.username }}**.</p>
+            
+            {% if user.is_superuser or user.is_staff %}
+                <p>Tu rol es: **Administrador/Staff**. Tienes acceso completo.</p>
+            {% else %}
+                <p>Tu rol es: **Usuario Normal**. Tienes permisos limitados (solo tus alumnos).</p>
+            {% endif %}
+
+            <p>
+                <a href="{% url 'logout' %}" style="color: red;">[Cerrar Sesión]</a> |
+                <a href="{% url 'admin:index' %}">[Ir al Panel de Django Admin]</a>
+            </p>
+        </div>
+    {% else %}
+        <div class="box info">
+            <h2>Acceso Requerido</h2>
+            <p>No has iniciado sesión.</p>
+            <p>
+                <a href="{% url 'login' %}">[Iniciar Sesión]</a>
+            </p>
+        </div>
+    {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Cursos - Escuela Chucky TI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a3a52;
+            --secondary: #2c5aa0;
+            --accent: #e8f0f8;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --gray: #34495e;
+            --light: #ecf0f1;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-dark);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* HEADER */
+        .page-header {
+            background: white;
+            border-left: 5px solid var(--secondary);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(26, 58, 82, 0.08);
+        }
+
+        .page-header h1 {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-header h1 i {
+            color: var(--secondary);
+        }
+
+        .page-header p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin: 10px 0 0 0;
+        }
+
+        .user-info-badge {
+            background: var(--accent);
+            border-left: 4px solid var(--secondary);
+            border-radius: 6px;
+            padding: 10px 16px;
+            display: inline-block;
+            font-size: 0.85rem;
+            margin-top: 15px;
+        }
+
+        .user-info-badge strong {
+            color: var(--primary);
+        }
+
+        .alert-info-custom {
+            background: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            border-radius: 6px;
+            padding: 12px 16px;
+            color: #0c5460;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+        }
+
+        /* TOOLBAR */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn-action {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            border: none;
+            font-size: 0.9rem;
+            transition: 0.3s all;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .btn-create {
+            background: var(--secondary);
+            color: white;
+            box-shadow: 0 4px 10px rgba(44, 90, 160, 0.2);
+        }
+
+        .btn-create:hover {
+            background: #1e5a96;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(44, 90, 160, 0.3);
+        }
+
+        .btn-back {
+            background: var(--light);
+            color: var(--text-dark);
+            border: 2px solid #bdc3c7;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-back:hover {
+            background: white;
+            color: var(--text-dark);
+            transform: translateY(-2px);
+        }
+
+        /* TABLA */
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(26, 58, 82, 0.08);
+            overflow: hidden;
+        }
+
+        .table {
+            color: var(--text-dark);
+            margin-bottom: 0;
+        }
+
+        .table thead {
+            background: var(--accent);
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .table thead th {
+            color: var(--primary);
+            font-weight: 700;
+            padding: 16px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            border: none;
+        }
+
+        .table thead th i {
+            color: var(--secondary);
+            margin-right: 6px;
+        }
+
+        .table tbody tr {
+            border-bottom: 1px solid #ecf0f1;
+            transition: 0.3s all;
+        }
+
+        .table tbody tr:hover {
+            background: #f8f9fa;
+            transform: scale(1.005);
+        }
+
+        .table tbody td {
+            padding: 14px 16px;
+            vertical-align: middle;
+            color: var(--text-dark);
+        }
+
+        .curso-name {
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .curso-codigo {
+            background: #d5e8f7;
+            border: 1px solid #b3d9f2;
+            border-radius: 4px;
+            padding: 6px 12px;
+            display: inline-block;
+            font-size: 0.8rem;
+            color: var(--secondary);
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+
+        .descripcion {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .badge-alumnos {
+            background: var(--accent);
+            border-left: 3px solid var(--success);
+            border-radius: 4px;
+            padding: 6px 12px;
+            display: inline-block;
+            font-weight: 700;
+            color: var(--success);
+            font-size: 0.9rem;
+        }
+
+        /* ACCIONES */
+        .acciones {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-sm-action {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            border: none;
+            font-size: 0.75rem;
+            transition: 0.3s all;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .btn-edit {
+            background: #d5e8f7;
+            color: var(--secondary);
+        }
+
+        .btn-edit:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-delete {
+            background: #fadbd8;
+            color: var(--danger);
+        }
+
+        .btn-delete:hover {
+            background: var(--danger);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-readonly {
+            background: #e8e8e8;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .btn-readonly:hover {
+            background: #e8e8e8;
+            color: #999;
+            transform: none;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-state-icon {
+            font-size: 3.5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        /* CONTADOR */
+        .counter {
+            background: var(--accent);
+            border-left: 4px solid var(--secondary);
+            border-radius: 6px;
+            padding: 10px 20px;
+            display: inline-block;
+            font-weight: 700;
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 20px;
+            }
+
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn-action {
+                justify-content: center;
+            }
+
+            .table-container {
+                padding: 15px;
+                overflow-x: auto;
+            }
+
+            .table thead th {
+                padding: 10px;
+                font-size: 0.7rem;
+            }
+
+            .table tbody td {
+                padding: 10px;
+                font-size: 0.85rem;
+            }
+
+            .acciones {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .btn-sm-action {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .descripcion {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="main-container">
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <h1>
+            <i class="fas fa-book"></i>
+            Gestión de Cursos
+        </h1>
+        <p>Administra todos los cursos disponibles en la escuela</p>
+        <div class="user-info-badge">
+            👤 Usuario: <strong>{{ user.username }}</strong>
+            {% if user.is_superuser or user.is_staff %}
+                | <strong style="color: #e74c3c;">ADMINISTRADOR</strong>
+            {% else %}
+                | <strong style="color: var(--secondary);">USUARIO</strong>
+            {% endif %}
+        </div>
+        {% if not user.is_superuser and not user.is_staff %}
+            <div class="alert-info-custom">
+                <i class="fas fa-info-circle"></i>
+                <span>Acceso de solo lectura. Solo administradores pueden crear/editar cursos.</span>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+        <div>
+            {% if user.is_superuser or user.is_staff %}
+                <a href="{% url 'curso_create' %}" class="btn-action btn-create">
+                    <i class="fas fa-plus"></i> Crear Nuevo Curso
+                </a>
+            {% endif %}
+        </div>
+        <div>
+            <span class="counter">
+                <i class="fas fa-list"></i> Total: {{ cursos.count }} curso{{ cursos.count|pluralize }}
+            </span>
+            <a href="{% url 'index' %}" class="btn-action btn-back" style="margin-left: 10px;">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </div>
+    </div>
+
+    <!-- TABLA O EMPTY STATE -->
+    <div class="table-container">
+        {% if cursos %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-barcode"></i> Código</th>
+                            <th><i class="fas fa-book"></i> Nombre</th>
+                            <th><i class="fas fa-align-left"></i> Descripción</th>
+                            <th><i class="fas fa-users"></i> Alumnos</th>
+                            <th><i class="fas fa-cog"></i> Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for curso in cursos %}
+                        <tr>
+                            <td>
+                                <span class="curso-codigo">
+                                    {{ curso.codigo|default:"SIN COD" }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="curso-name">
+                                    {{ curso.nombre }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="descripcion">
+                                    {{ curso.descripcion|truncatewords:8 }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge-alumnos">
+                                    <i class="fas fa-users"></i> {{ curso.alumnos.count }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="acciones">
+                                    {% if user.is_superuser or user.is_staff %}
+                                        <a href="{% url 'curso_update' curso.pk %}" class="btn-sm-action btn-edit">
+                                            <i class="fas fa-edit"></i> Editar
+                                        </a>
+                                        <a href="{% url 'curso_delete' curso.pk %}" class="btn-sm-action btn-delete">
+                                            <i class="fas fa-trash"></i> Eliminar
+                                        </a>
+                                    {% else %}
+                                        <button class="btn-sm-action btn-readonly" disabled title="Solo administradores">
+                                            <i class="fas fa-lock"></i> Bloqueado
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="fas fa-inbox"></i>
+                </div>
+                <h3>No hay cursos registrados</h3>
+                <p>Los cursos aparecerán aquí una vez que sean creados por un administrador.</p>
+                {% if user.is_superuser or user.is_staff %}
+                    <a href="{% url 'curso_create' %}" class="btn-action btn-create" style="margin-top: 20px;">
+                        <i class="fas fa-plus"></i> Crear Primer Curso
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escuela Chucky TI - Registro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- TODO EL CSS ES EL MISMO QUE ME ENTREGASTE --- */
+        /* (Solo cambié textos del lado derecho para modo registro) */
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #2d5f7f;
+            --secondary: #4a8fc7;
+            --accent: #f5a962;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecf1 100%);
+            min-height: 100vh;
+            display: flex;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes blob-animate {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        .login-left {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary), #1e4d63);
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            animation: slideInLeft 0.8s ease;
+        }
+
+        .login-left::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+            animation: blob-animate 8s ease infinite;
+        }
+
+        .login-left::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(245, 169, 98, 0.15), transparent);
+            border-radius: 50%;
+            bottom: -80px;
+            left: -80px;
+            animation: blob-animate 10s ease infinite reverse;
+        }
+
+        .left-content h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-item { display: flex; align-items: center; gap: 15px; }
+
+        .login-right {
+            flex: 1;
+            padding: 60px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: slideInRight 0.8s ease;
+        }
+
+        .login-form-container { width: 100%; max-width: 420px; }
+        .form-header { text-align: center; margin-bottom: 40px; }
+
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 10px; color: var(--primary); font-weight: 600; }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--accent), #f59347);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .form-footer a { color: var(--secondary); font-weight: bold; text-decoration: none; }
+    </style>
+</head>
+
+<body>
+
+    <!-- PANEL IZQUIERDO -->
+    <div class="login-left">
+        <div class="left-content">
+            <h1>📝 ¡Crea tu cuenta!</h1>
+            <p>Únete a la Escuela Chucky TI y accede a cursos, certificaciones y una comunidad de aprendizaje única.</p>
+
+            <div class="features">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="feature-text">
+                        <h3>Registro Rápido</h3>
+                        <p>Solo necesitas tus datos básicos</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="feature-text">
+                        <h3>Seguridad Garantizada</h3>
+                        <p>Tus datos están protegidos</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="feature-text">
+                        <h3>Acceso Total</h3>
+                        <p>A cursos, material y comunidad</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL DERECHO (FORMULARIO DE REGISTRO) -->
+    <div class="login-right">
+        <div class="login-form-container">
+
+            <div class="form-header">
+                <h2>Crea tu Cuenta</h2>
+                <p>Completa la información para registrarte</p>
+            </div>
+
+            <form method="POST" class="login-form">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            {{ field.errors }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-user-plus"></i> Registrarme
+                </button>
+            </form>
+
+            <div class="form-footer">
+                <p>¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a></p>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
